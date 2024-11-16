@@ -1,5 +1,4 @@
 using API.Data;
-using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,13 +12,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DBContext>();
-    await Seed.SeedWorkoutRequests(context);  // Seed the data
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
