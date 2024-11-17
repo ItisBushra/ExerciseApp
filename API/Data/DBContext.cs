@@ -13,8 +13,8 @@ namespace API.Data
         {
             
         }
-        public DbSet<WorkoutGenerateRequest> WorkoutGenerateRequests { get;} = null!;
-        public DbSet<WorkoutGenerateResponse> WorkoutGenerateResponses { get;}
+        public DbSet<WorkoutGenerateRequest> WorkoutGenerateRequests { get; set; }
+        public DbSet<WorkoutGenerateResponse> WorkoutGenerateResponses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //One-to-One
