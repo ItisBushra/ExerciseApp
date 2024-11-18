@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using API.DTO;
+using API.Helper;
 using API.Models;
 using API.Repository.IRepository;
 using AutoMapper;
@@ -47,6 +48,22 @@ namespace API.Controllers
             return Ok(responses);
         }
 
+        [HttpGet("options")]
+        [ProducesResponseType(200, Type = typeof(Options))]
+        [AllowAnonymous]
+        public IActionResult GetOptions()
+        {
+            // Return all valid options for clients to display as selections
+            var options = new
+            {
+                Goals = Options.GoalMappings.Keys,
+                Equipment = Options.EquipmentMappings.Keys,
+                FitnessLevels = Options.FitnessLevelMappings.Keys
+            };
+
+            return Ok(options);
+        }
+
         [HttpGet("Response")] 
         [ProducesResponseType(200, Type = typeof(ResponseDTO))]
         [AllowAnonymous]
@@ -57,7 +74,32 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var requestExists = await _workoutPlanRepository.RequestExistsAsync(goal, equipment, fitnessLevel);
+                var validGoals = Options.GoalMappings.Keys.ToList();
+                var validEquipment = Options.EquipmentMappings.Keys.ToList();
+                var validFitnessLevels = Options.FitnessLevelMappings.Keys.ToList();
+
+                // If no query parameters are provided, return available options
+                if (string.IsNullOrWhiteSpace(goal) && 
+                    string.IsNullOrWhiteSpace(equipment) && 
+                    string.IsNullOrWhiteSpace(fitnessLevel))
+                {
+                    return Ok(new
+                    {
+                        Message = "Please select from the following options.",
+                        Options = new
+                        {
+                            Goals = validGoals,
+                            Equipment = validEquipment,
+                            FitnessLevels = validFitnessLevels
+                        }
+                    });
+                }
+            
+            var dbGoal = Options.GoalMappings[goal];
+            var dbEquipment = Options.EquipmentMappings[equipment];
+            var dbFitnessLevel = Options.FitnessLevelMappings[fitnessLevel];
+
+            var requestExists = await _workoutPlanRepository.RequestExistsAsync(dbGoal, dbEquipment, dbFitnessLevel);
             if (requestExists == null) return NotFound("Request does not exist.");
 
             var response = await _workoutPlanRepository.GetResponseByRequestAsync(requestExists);
