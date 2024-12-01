@@ -23,7 +23,7 @@ builder.Services.AddHttpsRedirection(options =>
 {
     options.HttpsPort = 7084;
 });
-
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

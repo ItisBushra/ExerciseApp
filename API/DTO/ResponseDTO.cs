@@ -13,6 +13,5 @@ namespace API.DTO
         public string ExerciseDuration { get; set; }
         public string TargetMuscleGroup { get; set; }
         public int WorkoutGenerateRequestId { get; set; }
-
     }
 }
