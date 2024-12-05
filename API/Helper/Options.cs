@@ -9,7 +9,7 @@ namespace API.Helper
     {
         public static readonly Dictionary<string, string> GoalMappings = new()
         {
-            { "Build Muscle", "BuildMuscle" },
+            { "Build Muscle", "BuildMuscles" },
             { "Improve Flexibility", "ImproveFlexibility" },
             { "Lose Weight", "LoseWeight" },
             { "Increase Endurance", "IncreaseEndurance" }
