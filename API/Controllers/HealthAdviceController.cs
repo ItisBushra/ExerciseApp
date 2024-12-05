@@ -32,7 +32,7 @@ namespace API.Controllers
             var options = new
             {
                 Sex = Options.GenderMappings.Keys,
-                ActivityLevel = Options.FitnessLevelMappings.Keys,
+                ActivityLevel = Options.ActivityLevelMappings.Keys,
             };
 
             return Ok(options);
